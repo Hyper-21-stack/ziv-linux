@@ -17,12 +17,13 @@ clear
 
 echo ""
 echo -e "\033[1;33mZivpn UDP Services\033[0m"
-echo -e "\033[1;32m1. Zivpn Udp\033[0m"
-echo -e "\033[1;32m2. Create Auth \033[0m"
-echo -e "\033[1;32m3. Active Users  \033[1;0m"
-echo -e "\033[1;32m0. Exit \033[0m"
+echo -e "\033[1;32m1. Install ZIVPN UDP\033[0m"
+echo -e "\033[1;32m2. Create Auth\033[0m"
+echo -e "\033[1;32m3. Active Users\033[0m"
+echo -e "\033[1;31m4. Uninstall ZIVPN\033[0m"
+echo -e "\033[1;32m0. Exit\033[0m"
 
-read -p "$(echo -e "\033[1;33mSelect a number from 0 to 3: \033[0m")" input
+read -p "$(echo -e "\033[1;33mSelect a number from 0 to 4: \033[0m")" input
 
 if ! is_number "$input"; then
     echo -e "$YELLOW"
@@ -35,7 +36,7 @@ clear
 
 case $input in
     1)
-        echo -e "\033[1;33mInstalling ZIVPN Hysteria Udp...\033[0m"
+        echo -e "\033[1;33mInstalling ZIVPN Hysteria UDP...\033[0m"
 
         cd /root
         systemctl stop ziv-server.service
@@ -180,6 +181,16 @@ EOF
         echo -e "\033[1;33m$(cat /root/zv/authusers | tr ',' '\n')\033[0m"
         echo ""
         read -p "Press any key to exit ↩" key
+        exit 0
+        ;;
+    4)
+        echo -e "\033[1;31mUninstalling ZIVPN...\033[0m"
+        systemctl stop ziv-server.service
+        systemctl disable ziv-server.service
+        rm -rf /etc/systemd/system/ziv-server.service
+        rm -rf /root/zv
+        systemctl daemon-reload
+        echo -e "\033[1;32mZIVPN has been successfully uninstalled.\033[0m"
         exit 0
         ;;
     *)
